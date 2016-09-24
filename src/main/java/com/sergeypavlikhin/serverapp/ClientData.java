@@ -1,12 +1,14 @@
 package com.sergeypavlikhin.serverapp;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 public class ClientData {
 
 	private String data;
 	private String clientName;
 	
 	public ClientData(String data, String clientName) {
-		this.data = data;
+		this.data = StringEscapeUtils.escapeJava(data);
 		this.clientName = clientName;
 	}
 

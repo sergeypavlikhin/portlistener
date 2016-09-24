@@ -9,10 +9,8 @@ import junit.framework.Assert;
 
 public class ParamParserTest {
 	
-	
-	
 	@Test
-	public void test_testInit(){
+	public void simpleInit(){
 		
 		String[] args = new String[]{
 				"-p", "3311"
@@ -23,7 +21,22 @@ public class ParamParserTest {
 		
 	}
 	@Test
-	public void test_testParse(){
+	public void parseCorrectLine(){
+		
+		Integer port = 3311;
+		
+		String[] args = new String[]{
+				"-p", String.valueOf(port)
+		};
+		
+		ParamsParser parser 		= new ParamsParser(args);	
+		ParamParserResult result 	= parser.getResult();
+		
+		Assert.assertEquals(port, result.getPort());
+		
+	}
+	@Test
+	public void parseIncorrectLineWithBadParam(){
 		
 		int port = 3311;
 		
@@ -34,7 +47,74 @@ public class ParamParserTest {
 		ParamsParser parser 		= new ParamsParser(args);	
 		ParamParserResult result 	= parser.getResult();
 		
-		Assert.assertEquals(result.getPort(), port);
+		Assert.assertFalse(result.isAllOk());
+		
+	}
+	@Test
+	public void parseIncorrectLineWithStringPort(){
+		
+		String[] args = new String[]{
+				"-p", "someport"
+		};
+		
+		ParamsParser parser 		= new ParamsParser(args);	
+		ParamParserResult result 	= parser.getResult();
+		
+		Assert.assertFalse(result.isAllOk());
+		
+	}
+	
+	/**
+	 * Warning! Hardcoded error message. Need to load error message from file or something else.
+	 */
+	@Test
+	public void parseIncorrectLineWithStringPortMessage(){
+		
+		String[] args = new String[]{
+				"-p", "someport"
+		};
+		
+		ParamsParser parser 		= new ParamsParser(args);	
+		ParamParserResult result 	= parser.getResult();
+		
+		Assert.assertTrue(result.getMessages().contains("The port must be a number"));
+		
+	}
+	@Test
+	public void emptyArgs(){
+		
+		String[] args = new String[]{};
+		
+		ParamsParser parser 		= new ParamsParser(args);	
+		ParamParserResult result 	= parser.getResult();
+		
+		Assert.assertTrue(result.isAllOk());
+		
+	}
+	@Test
+	public void oneRecodnizedArg(){
+		
+		String[] args = new String[]{
+				"-p"
+		};
+		
+		ParamsParser parser 		= new ParamsParser(args);	
+		ParamParserResult result 	= parser.getResult();
+		
+		Assert.assertTrue(result.getMessages().contains("The port must be a number"));
+		
+	}
+	@Test
+	public void randomString(){
+		
+		String[] args = new String[]{
+				"dsadsda dsadm 22313 3213m 13o213m12 ml;dmasl;dm"
+		};
+		
+		ParamsParser parser 		= new ParamsParser(args);	
+		ParamParserResult result 	= parser.getResult();
+		
+		Assert.assertTrue(result.isEmpty());
 		
 	}
 }

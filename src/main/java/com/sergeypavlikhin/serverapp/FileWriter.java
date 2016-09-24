@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -40,22 +41,28 @@ public class FileWriter {
 	
 	public void createDocument(){
 
-		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			
-			document = builder.newDocument();		
-			root = document.createElement(ROOT_ELEMENT);
-			updateFile();			
-
+		try {			
+			DocumentBuilder builder = createDocumentBuilder();			
+			prepareDocument(builder);
+			updateFile();
 		} catch (Exception e) {
 			throw new RuntimeException("Error while created XML-file. Message: " + e.getMessage());
 		}
 				
 	}
+
+	private void prepareDocument(DocumentBuilder builder) {
+		document = builder.newDocument();		
+		root = document.createElement(ROOT_ELEMENT);
+	}
 	
 	public void persistClientData(ClientData clientData){
 		messages.add(clientData);
+	}
+	
+	private DocumentBuilder createDocumentBuilder() throws ParserConfigurationException{
+		return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		
 	}
 	
 	private void updateFile() throws Exception{
@@ -86,7 +93,7 @@ public class FileWriter {
 						appendToRoot(element);
 						updateFile();
 					} catch (Exception e) {
-						
+						log.error("Error while save data in file", e);
 					}
 				}
 			}

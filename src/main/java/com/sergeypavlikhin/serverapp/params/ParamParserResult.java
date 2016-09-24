@@ -7,14 +7,14 @@ import com.sergeypavlikhin.serverapp.ServerMode;
 
 public class ParamParserResult {
 
-	private int port;
-	private ServerMode mode;
+	private Integer port = null;
+	private ServerMode mode = null;
 	private List<String> messages = new ArrayList<>();
 	
-	public int getPort() {
+	public Integer getPort() {
 		return port;
 	}
-	public void setPort(int port) {
+	public void setPort(Integer port) {
 		this.port = port;
 	}
 	public ServerMode getMode() {
@@ -29,5 +29,10 @@ public class ParamParserResult {
 	public void setMessages(List<String> messages) {
 		this.messages = messages;
 	}
-	
+	public boolean isAllOk(){
+		return messages.isEmpty();
+	}
+	public boolean isEmpty(){
+		return port == null && mode == null;
+	}
 }

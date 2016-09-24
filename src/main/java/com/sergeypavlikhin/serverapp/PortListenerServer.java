@@ -12,9 +12,6 @@ import org.apache.log4j.Logger;
 
 public class PortListenerServer {
 
-	private static final int 	DEFAULT_PORT = 3311;
-	private static final String DEFAULT_HOST = "localhost";
-	
 	private static FileWriter writer;
 	private static ServerSocket server;
 	
@@ -47,7 +44,7 @@ public class PortListenerServer {
 
 
 	private static void prepareServer() throws IOException, UnknownHostException {
-		server = new ServerSocket(DEFAULT_PORT, 1024, InetAddress.getByName(DEFAULT_HOST));
+		server = new ServerSocket(Utils.DEFAULT_PORT, 1024, InetAddress.getByName(Utils.DEFAULT_HOST));
 	}
 
 	

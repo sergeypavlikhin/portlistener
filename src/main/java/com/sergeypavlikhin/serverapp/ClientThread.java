@@ -1,5 +1,6 @@
 package com.sergeypavlikhin.serverapp;
 
+import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 import org.apache.log4j.Logger;
@@ -18,13 +19,14 @@ public class ClientThread implements Runnable{
 	}
 	
 	public void run() {
-	
-		while(true){
+		boolean isRunning = true;
+		while(isRunning){
 			try {				
-				FutureTask<String> task = getTask();
-				writer.persistClientData(new ClientData(task.get(), callable.getName()));
+				Future<String> task = getTask();
+				writer.persistClientData(new ClientData(task.get(), callable.getName()));								
 			} catch (Exception e) {
 				log.error("Error while process getting client data", e);
+				isRunning = false;
 			}
 		}
 	}

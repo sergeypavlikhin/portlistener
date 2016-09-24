@@ -1,7 +1,5 @@
 package com.sergeypavlikhin.serverapp;
 
-import static com.sergeypavlikhin.serverapp.Utils.println;
-
 import java.io.DataInputStream;
 import java.net.Socket;
 import java.util.concurrent.Callable;
@@ -22,9 +20,10 @@ public class ClientCallable implements Callable<String>{
 	}
 	
 
-	public String call() throws Exception {
-		DataInputStream input  = new DataInputStream(socket.getInputStream());
-		return input.readUTF();
+	public String call() throws Exception {	
+		DataInputStream input = new DataInputStream(socket.getInputStream());
+		String result = input.readUTF();
+		return result;	
 	}
 
 	public String getName() {
@@ -35,4 +34,12 @@ public class ClientCallable implements Callable<String>{
 		this.name = name;
 	}
 
+	public Socket getSocket() {
+		return socket;
+	}
+
+
+	public boolean isNotClosed() {
+		return !socket.isClosed();
+	}
 }

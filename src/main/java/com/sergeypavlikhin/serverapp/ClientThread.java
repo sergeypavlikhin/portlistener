@@ -23,15 +23,20 @@ public class ClientThread implements Runnable{
 	public void run() {
 		boolean isRunning = true;
 		while(isRunning){
-			try {				
-				
+			try {
 				Future<String> task 	= getTask();
 				ClientData clientData 	= new ClientData(task.get(), callable.getName());
 				
 				writer.persistClientData(clientData);								
 			
-			} catch (Exception e) {
-				log.error("Error while process getting client data", e);
+			} catch (Exception e) {		
+				//FIXME WORKROUND
+				if(e.getMessage().contains("java.net.SocketException: Connection reset")){
+					//Need a good idea how to detect disconnect without exception
+					System.out.println(String.format("%s left us", callable.getName()));
+				}else{
+					log.error("Error while process getting client data", e);
+				}				
 				isRunning = false;
 			}
 		}

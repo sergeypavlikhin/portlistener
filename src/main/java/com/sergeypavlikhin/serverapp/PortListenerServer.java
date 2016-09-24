@@ -34,7 +34,7 @@ public class PortListenerServer {
 		}
 	}
 
-	private static void startServer() throws IOException {
+	private static void startServer() throws IOException {		
 		LOG.info(String.format("Server just started on %s:%s...", Utils.DEFAULT_HOST, parsedParams.getPort()));
 		final ExecutorService pool = Executors.newCachedThreadPool();
 		
@@ -48,7 +48,7 @@ public class PortListenerServer {
 	private static void parseParams(String[] args) {
 		parsedParams = ParamsParser.parseArguments(args);
 		if(parsedParams.isEmpty()){
-			LOG.info("Server will be start with default params");
+			System.out.println("Server will be start with default params");
 			parsedParams.setMode(Utils.DEFAULT_MODE);
 			parsedParams.setPort(Utils.DEFAULT_PORT);
 		}else{ 

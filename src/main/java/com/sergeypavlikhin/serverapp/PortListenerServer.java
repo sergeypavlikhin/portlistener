@@ -40,15 +40,15 @@ public class PortListenerServer {
 		
 		while(true){
 			Socket connectedSocket = server.accept();
-			ClientThread clientThread = new ClientThread(writer, connectedSocket);			
+			ClientThread clientThread = new ClientThread(writer, connectedSocket);			//For every client create ClientThread which implements Runnable			
 			pool.submit(clientThread);
 		}
 	}
 
 	private static void parseParams(String[] args) {
 		parsedParams = ParamsParser.parseArguments(args);
-		if(parsedParams.isEmpty()){
-			System.out.println("Server will be start with default params");
+		if(parsedParams.isEmpty()){															//If the user hadn't entered params
+			System.out.println("Server will be start with default params. ");
 			parsedParams.setMode(Utils.DEFAULT_MODE);
 			parsedParams.setPort(Utils.DEFAULT_PORT);
 		}else{ 

@@ -43,8 +43,6 @@ public class ApplicationTest {
 		
 		final Integer port 		= this.port;
 		final String address 	= "localhost";
-		final String paramKey 	= "-p";
-		
 				
 		//Establish connection
 		Socket socket = new Socket(address, port);
@@ -59,15 +57,32 @@ public class ApplicationTest {
 		
 		final Integer port 		= this.port;
 		final String address 	= "localhost";
-		final String paramKey 	= "-p";
 						
 		//Establish connection
 		Socket socket = new Socket(address, port);
 		socket.close();		
 		
-		Assert.assertFalse(socket.isConnected());
+		Assert.assertTrue(socket.isClosed());
 		
 	}
+	@Test
+	public void checkManyConnection() throws UnknownHostException, IOException, InterruptedException, ExecutionException{
+		
+		final Integer port 		= this.port;
+		final String address 	= "localhost";
+						
+		int connections = 100;
+		Socket [] sockets = new Socket[connections];
+		
+		for(int i = 0; i < connections; i++){
+			Socket socket = new Socket(address, port);
+			sockets[i] = socket;
+		}		
+		
+		Assert.assertTrue(true);
+		
+	}
+	
 	
 	@AfterClass
 	public static void destroy(){

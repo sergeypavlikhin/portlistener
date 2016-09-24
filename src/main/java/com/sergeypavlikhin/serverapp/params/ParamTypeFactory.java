@@ -8,6 +8,8 @@ public class ParamTypeFactory {
 
 	public static AbstractParamType getType(String key){
 		switch (key) {
+//		case "-m":
+//			return new Mode();
 		case "-p":
 			return new Port();
 		default:

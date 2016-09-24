@@ -90,8 +90,10 @@ public class FileWriter {
 					
 					try {
 						Element element = createChildElement(clientData);
-						appendToRoot(element);
-						updateFile();
+						if(element != null){
+							appendToRoot(element);
+							updateFile();
+						}
 					} catch (Exception e) {
 						log.error("Error while save data in file", e);
 					}
@@ -100,6 +102,10 @@ public class FileWriter {
 		}
 		
 		private Element createChildElement(ClientData clientData){
+			String data = clientData.getData();
+			
+			if(data.trim().isEmpty()) return null;
+			
 			Element result = document.createElement(ELEMENT);
 			result.setAttribute(ATTR_VALUE, clientData.getData());
 			result.setAttribute(ATTR_CLIENT, clientData.getClientName());

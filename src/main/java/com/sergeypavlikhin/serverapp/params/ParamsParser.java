@@ -9,9 +9,6 @@ import com.sergeypavlikhin.serverapp.params.types.AbstractParamType;
 
 public class ParamsParser {
 
-	private String[] args;
-	
-
 	public static ParamParserResult parseArguments(String[] args){
 		ParamParserResult result = new ParamParserResult();		
 		fillResult(args, result);		

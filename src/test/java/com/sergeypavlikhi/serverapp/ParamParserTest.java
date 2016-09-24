@@ -23,6 +23,7 @@ public class ParamParserTest {
 		Assert.assertEquals(port, result.getPort());
 		
 	}
+	
 	@Test
 	public void parseIncorrectLineWithBadParam(){
 		
@@ -36,6 +37,7 @@ public class ParamParserTest {
 		Assert.assertFalse(result.isAllOk());
 		
 	}
+	
 	@Test
 	public void parseIncorrectLineWithStringPort(){
 		

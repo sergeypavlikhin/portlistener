@@ -20,7 +20,7 @@ public class ClientCallable implements Callable<String>{
 	}
 	
 
-	public String call() throws Exception {	
+	public String call() throws Exception {
 		DataInputStream input = new DataInputStream(socket.getInputStream());
 		String result = input.readUTF();
 		return result;	

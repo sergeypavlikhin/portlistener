@@ -15,7 +15,7 @@ import com.sergeypavlikhin.serverapp.params.ParamsParser;
 
 public class PortListenerServer {
 
-	public static FileWriter writer;
+	public static volatile FileWriter writer;
 	public static ServerSocket server;
 	private static ParamParserResult parsedParams;
 	
@@ -26,7 +26,7 @@ public class PortListenerServer {
 		try {
 			prepareFilewriter();
 			prepareServer();
-			parseParams(args);			
+			parseParams(args);
 			startServer();
 			
 		} catch (Exception e) {
@@ -34,23 +34,16 @@ public class PortListenerServer {
 		}
 	}
 
-
 	private static void startServer() throws IOException {
 		LOG.info(String.format("Server just started on %s:%s...", Utils.DEFAULT_HOST, parsedParams.getPort()));
 		final ExecutorService pool = Executors.newCachedThreadPool();
 		
 		while(true){
 			Socket connectedSocket = server.accept();
-			
-			String connectedAdress = connectedSocket.getRemoteSocketAddress().toString();
-			
-			ClientCallable clientCallable 	= new ClientCallable(connectedAdress, connectedSocket);				
-			ClientThread clientThread 		= new ClientThread(writer, clientCallable);
-
+			ClientThread clientThread = new ClientThread(writer, connectedSocket);			
 			pool.submit(clientThread);
 		}
 	}
-
 
 	private static void parseParams(String[] args) {
 		parsedParams = ParamsParser.parseArguments(args);
@@ -67,11 +60,9 @@ public class PortListenerServer {
 		}
 	}
 
-
 	private static void prepareServer() throws IOException, UnknownHostException {
 		server = new ServerSocket(Utils.DEFAULT_PORT, 1024, InetAddress.getByName(Utils.DEFAULT_HOST));
 	}
-
 	
 	private static void prepareFilewriter() {
 		writer = new FileWriter();

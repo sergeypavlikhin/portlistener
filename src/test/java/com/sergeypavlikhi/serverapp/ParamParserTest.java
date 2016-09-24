@@ -1,25 +1,15 @@
 package com.sergeypavlikhi.serverapp;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.sergeypavlikhin.serverapp.params.ParamParserResult;
 import com.sergeypavlikhin.serverapp.params.ParamsParser;
 
-import junit.framework.Assert;
 
 public class ParamParserTest {
 	
-	@Test
-	public void simpleInit(){
-		
-		String[] args = new String[]{
-				"-p", "3311"
-		};
-		
-		ParamsParser parser = new ParamsParser(args);		
-		Assert.assertNotNull(parser);
-		
-	}
+	
 	@Test
 	public void parseCorrectLine(){
 		
@@ -28,10 +18,8 @@ public class ParamParserTest {
 		String[] args = new String[]{
 				"-p", String.valueOf(port)
 		};
-		
-		ParamsParser parser 		= new ParamsParser(args);	
-		ParamParserResult result 	= parser.getResult();
-		
+			
+		ParamParserResult result 	= ParamsParser.parseArguments(args);		
 		Assert.assertEquals(port, result.getPort());
 		
 	}
@@ -43,10 +31,8 @@ public class ParamParserTest {
 		String[] args = new String[]{
 				"-u", String.valueOf(port)
 		};
-		
-		ParamsParser parser 		= new ParamsParser(args);	
-		ParamParserResult result 	= parser.getResult();
-		
+			
+		ParamParserResult result 	= ParamsParser.parseArguments(args);		
 		Assert.assertFalse(result.isAllOk());
 		
 	}
@@ -57,11 +43,8 @@ public class ParamParserTest {
 				"-p", "someport"
 		};
 		
-		ParamsParser parser 		= new ParamsParser(args);	
-		ParamParserResult result 	= parser.getResult();
-		
+		ParamParserResult result 	= ParamsParser.parseArguments(args);		
 		Assert.assertFalse(result.isAllOk());
-		
 	}
 	
 	/**
@@ -73,10 +56,8 @@ public class ParamParserTest {
 		String[] args = new String[]{
 				"-p", "someport"
 		};
-		
-		ParamsParser parser 		= new ParamsParser(args);	
-		ParamParserResult result 	= parser.getResult();
-		
+			
+		ParamParserResult result 	= ParamsParser.parseArguments(args);
 		Assert.assertTrue(result.getMessages().contains("The port must be a number"));
 		
 	}
@@ -85,9 +66,7 @@ public class ParamParserTest {
 		
 		String[] args = new String[]{};
 		
-		ParamsParser parser 		= new ParamsParser(args);	
-		ParamParserResult result 	= parser.getResult();
-		
+		ParamParserResult result 	= ParamsParser.parseArguments(args);
 		Assert.assertTrue(result.isAllOk());
 		
 	}
@@ -97,10 +76,8 @@ public class ParamParserTest {
 		String[] args = new String[]{
 				"-p"
 		};
-		
-		ParamsParser parser 		= new ParamsParser(args);	
-		ParamParserResult result 	= parser.getResult();
-		
+			
+		ParamParserResult result 	= ParamsParser.parseArguments(args);
 		Assert.assertTrue(result.getMessages().contains("The port must be a number"));
 		
 	}
@@ -111,9 +88,7 @@ public class ParamParserTest {
 				"dsadsda dsadm 22313 3213m 13o213m12 ml;dmasl;dm"
 		};
 		
-		ParamsParser parser 		= new ParamsParser(args);	
-		ParamParserResult result 	= parser.getResult();
-		
+		ParamParserResult result 	= ParamsParser.parseArguments(args);		
 		Assert.assertTrue(result.isEmpty());
 		
 	}

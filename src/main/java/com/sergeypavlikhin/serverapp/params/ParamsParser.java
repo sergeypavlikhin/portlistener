@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.sergeypavlikhin.serverapp.ServerMode;
 import com.sergeypavlikhin.serverapp.exceptions.NotImplementedTypeException;
 import com.sergeypavlikhin.serverapp.params.types.AbstractParamType;
 
@@ -12,17 +11,13 @@ public class ParamsParser {
 
 	private String[] args;
 	
-//	private ServerMode defaultMode = ServerMode.TCP;
-	
-	public ParamsParser (String[] args){
-		this.args = args;
-	}
-	public ParamParserResult getResult(){
+
+	public static ParamParserResult parseArguments(String[] args){
 		ParamParserResult result = new ParamParserResult();		
-		fillResult(result);		
+		fillResult(args, result);		
 		return result;
 	}
-	private void fillResult(ParamParserResult result) {
+	private static void fillResult(String[] args, ParamParserResult result) {
 		
 		if (args.length > 0) {
 
@@ -61,7 +56,7 @@ public class ParamsParser {
 		
 		
 	}
-	private boolean isParamIden(String arg){
+	private static boolean isParamIden(String arg){
 		if(!arg.isEmpty()){
 			return arg.startsWith("-");
 		}else{

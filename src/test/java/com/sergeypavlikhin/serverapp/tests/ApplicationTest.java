@@ -5,10 +5,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

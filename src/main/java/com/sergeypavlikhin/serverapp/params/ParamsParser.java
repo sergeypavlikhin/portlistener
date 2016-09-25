@@ -44,7 +44,7 @@ public class ParamsParser {
 				catch (IllegalArgumentException | NotImplementedTypeException e) {
 					result.getMessages().add(e.getMessage());
 				}catch (Exception e) {
-					throw new RuntimeException("Something wrong");
+					throw new RuntimeException("Something wrong", e);
 				}
 				
 			}

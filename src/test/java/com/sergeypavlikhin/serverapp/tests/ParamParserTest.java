@@ -19,7 +19,7 @@ public class ParamParserTest {
 				"-p", String.valueOf(port)
 		};
 			
-		ParamParserResult result 	= ParamsParser.parseArguments(args);		
+		ParamParserResult result = ParamsParser.parseArguments(args);		
 		Assert.assertEquals(port, result.getPort());
 		
 	}
@@ -80,7 +80,7 @@ public class ParamParserTest {
 		};
 			
 		ParamParserResult result 	= ParamsParser.parseArguments(args);
-		Assert.assertTrue(result.getMessages().contains("The port must be a number"));
+		Assert.assertTrue(result.getMessages().contains("Please, enter the port"));
 		
 	}
 	@Test

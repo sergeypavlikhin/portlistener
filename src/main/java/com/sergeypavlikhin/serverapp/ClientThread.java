@@ -1,6 +1,7 @@
 package com.sergeypavlikhin.serverapp;
 
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
@@ -24,8 +25,9 @@ public class ClientThread implements Runnable{
 		boolean isRunning = true;
 		while(isRunning){
 			try {
-				Future<String> task 	= getTask();
-				ClientData clientData 	= new ClientData(task.get(), callable.getName());
+				Future<List<Byte>> task 	= getTask();
+				List<Byte> clientBytes 		= task.get();
+				ClientData clientData 		= new ClientData(clientBytes, callable.getName());
 				
 				writer.persistClientData(clientData);								
 			
@@ -42,8 +44,8 @@ public class ClientThread implements Runnable{
 		}
 	}
 
-	private FutureTask<String> getTask() {
-		FutureTask<String> task = new FutureTask<String>(callable);
+	private FutureTask<List<Byte>> getTask() {
+		FutureTask<List<Byte>> task = new FutureTask<List<Byte>>(callable);
 		Thread thread = new Thread(task);
 		thread.start();
 		return task;

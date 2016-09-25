@@ -2,12 +2,14 @@ package com.sergeypavlikhin.serverapp;
 
 import java.io.DataInputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 
 
-public class ClientCallable implements Callable<String>{
+public class ClientCallable implements Callable<List<Byte>>{
 
 	private String name;
 	private Socket socket;
@@ -20,13 +22,20 @@ public class ClientCallable implements Callable<String>{
 	}
 	
 
-	public String call() throws Exception {
+	public List<Byte> call() throws Exception {
+		List<Byte> bytes = new ArrayList<>();
+		byte[] buffer = null;
 		DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-		if(inputStream.available() > 0){
-			return inputStream.readUTF();
-		}else{
-			return "";	
+		while(inputStream.available() > 0){
+			
+			buffer = new byte[1024];
+			inputStream.read(buffer);
+			for (byte b : buffer) {
+				bytes.add(b);
+			}
 		}
+		
+		return bytes;
 	}
 
 	public String getName() {

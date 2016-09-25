@@ -1,22 +1,22 @@
 package com.sergeypavlikhin.serverapp;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import java.util.List;
 
 public class ClientData {
 
-	private String data;
+	private List<Byte> data;
 	private String clientName;
 	
-	public ClientData(String data, String clientName) {
-		this.data = StringEscapeUtils.escapeJava(data);
+	public ClientData(List<Byte> data, String clientName) {
+		this.data = data;
 		this.clientName = clientName;
 	}
 
-	public String getData() {
+	public List<Byte> getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public void setData(List<Byte> data) {
 		this.data = data;
 	}
 

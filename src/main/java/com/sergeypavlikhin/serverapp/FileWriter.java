@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -18,6 +19,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -138,12 +140,12 @@ public class FileWriter {
 		}
 		
 		private Element createChildElement(ClientData clientData){
-			String data = clientData.getData();
+			List<Byte> data = clientData.getData();
 			
-			if(data.trim().isEmpty()) return null;
+			if(data.isEmpty()) return null;
 			
 			Element result = document.createElement(ELEMENT);
-			result.setAttribute(ATTR_VALUE, clientData.getData());
+			result.setAttribute(ATTR_VALUE, StringUtils.join(data.toArray()));
 			result.setAttribute(ATTR_CLIENT, clientData.getClientName());
 			return result;
 		}

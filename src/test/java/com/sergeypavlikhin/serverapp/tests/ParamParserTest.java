@@ -1,4 +1,4 @@
-package com.sergeypavlikhi.serverapp;
+package com.sergeypavlikhin.serverapp.tests;
 
 import org.junit.Assert;
 import org.junit.Test;

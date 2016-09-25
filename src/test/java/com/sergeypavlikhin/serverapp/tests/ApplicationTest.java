@@ -1,4 +1,4 @@
-package com.sergeypavlikhi.serverapp;
+package com.sergeypavlikhin.serverapp.tests;
 
 import java.io.IOException;
 import java.net.Socket;

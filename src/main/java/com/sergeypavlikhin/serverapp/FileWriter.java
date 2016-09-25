@@ -1,6 +1,9 @@
 package com.sergeypavlikhin.serverapp;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -8,7 +11,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -25,7 +31,7 @@ public class FileWriter {
 	private final String ATTR_VALUE 	= "value";
 	private final String ATTR_CLIENT 	= "client";
 	
-	private final Thread thread = new Thread(new Saver());
+	private final Thread thread = new Thread(new FileSaver());
 	
 	private final ConcurrentLinkedQueue<ClientData> messages = new ConcurrentLinkedQueue<ClientData>();
 	
@@ -34,7 +40,7 @@ public class FileWriter {
 	private Document document;
 	private Element root;
 		
-	public FileWriter(){
+	public FileWriter(){		
 		createDocument();
 		thread.start();
 	}
@@ -44,11 +50,24 @@ public class FileWriter {
 		try {			
 			DocumentBuilder builder = createDocumentBuilder();			
 			prepareDocument(builder);
+			
+			createFileIfNessasury();
+			
 			updateFile();
 		} catch (Exception e) {
 			throw new RuntimeException("Error while created XML-file. Message: " + e.getMessage());
 		}
 				
+	}
+
+	private String getPath() throws URISyntaxException{		
+		return System.getProperty("user.home");
+	}
+	
+	private void createFileIfNessasury() throws IOException, URISyntaxException {
+		File existedFile = new File(getPath(), FILENAME);
+		if(!existedFile.exists())
+			existedFile.createNewFile();
 	}
 
 	private void prepareDocument(DocumentBuilder builder) {
@@ -66,18 +85,36 @@ public class FileWriter {
 	}
 	
 	private void updateFile() throws Exception{
+
+        FileOutputStream outputSteam = new FileOutputStream(getPath()  + "/" + FILENAME);
+		transformDocument(outputSteam);
+        outputSteam.close();
+	}
+
+	
+	/**
+	 * Add indent, set document type
+	 * @param outputSteam
+	 * @throws TransformerConfigurationException
+	 * @throws TransformerFactoryConfigurationError
+	 * @throws TransformerException
+	 */
+	private void transformDocument(FileOutputStream outputSteam)
+			throws TransformerConfigurationException, TransformerFactoryConfigurationError, TransformerException {
 		Transformer tr = TransformerFactory.newInstance().newTransformer();
         tr.setOutputProperty(OutputKeys.METHOD, "xml");
         tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        
-        FileOutputStream outputSteam = new FileOutputStream(FILENAME);        
-		
+        tr.setOutputProperty(OutputKeys.INDENT, "yes");
+        tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         tr.transform(new DOMSource(root), new StreamResult(outputSteam));
-		
-        outputSteam.close();
 	}
 	
-	class Saver implements Runnable{
+	
+	/**
+	 * FileSaver checks queue. Save in file when queue contains any object
+	 * 
+	 */
+	class FileSaver implements Runnable{
 
 		public void run() {
 			
@@ -86,11 +123,10 @@ public class FileWriter {
 				if(!messages.isEmpty()){
 					ClientData clientData = messages.poll();
 					
-					log.info("Message from [" + clientData.getClientName() + "] : " + clientData.getData());
-					
 					try {
 						Element element = createChildElement(clientData);
 						if(element != null){
+							log.info("Message from [" + clientData.getClientName() + "] : " + clientData.getData());
 							appendToRoot(element);
 							updateFile();
 						}

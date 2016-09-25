@@ -21,9 +21,9 @@ public class ClientCallable implements Callable<String>{
 	
 
 	public String call() throws Exception {
-		DataInputStream input = new DataInputStream(socket.getInputStream());
-		if(input.available() > 0){
-			return input.readUTF();
+		DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+		if(inputStream.available() > 0){
+			return inputStream.readUTF();
 		}else{
 			return "";	
 		}

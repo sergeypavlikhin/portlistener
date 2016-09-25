@@ -16,6 +16,10 @@ Only TCP protocol
 </ol>
 <h2>Params</h2>
 <dl>
- <dt>-p</dt>
- <dd>Port number. Must be more than 0 and less than 65535</dd>
+	 <dt>-p</dt>
+	 <dd>Port number. Must be more than 0 and less than 65535</dd>
 </dl>
+<h2>Logs and XML</h2>
+<p>
+	Logs and XML will be in you home directory
+</p>

@@ -17,5 +17,5 @@ Only TCP protocol
 <h2>Params</h2>
 <dl>
  <dt>-p</dt>
- <dt>Port number. Must be more than 0 and less than 65535</dt>
+ <dd>Port number. Must be more than 0 and less than 65535</dd>
 </dl>

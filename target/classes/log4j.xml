@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration >
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender" >
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+	      <param name="levelMin" value="ALL" />
+	      <param name="levelMax" value="INFO" />
+	    </filter>
+	</appender>
+	
+	<appender name="FILE_ERROR" class="org.apache.log4j.FileAppender">
+	   <param name="file" value="${user.home}/log.error"/>   
+	   <layout class="org.apache.log4j.PatternLayout">
+	      <param name="conversionPattern" value=" %c: %m%n"/>
+	   </layout>
+	   <filter class="org.apache.log4j.varia.LevelRangeFilter">
+	      <param name="levelMin" value="ERROR" />
+	      <param name="levelMax" value="ERROR" />
+	    </filter>
+	</appender>
+	
+	<appender name="FILE_INFO" class="org.apache.log4j.FileAppender">
+	   <param name="file" value="${user.home}/log.info"/>
+ 		<param name="Threshold" value="INFO"/>
+	   <layout class="org.apache.log4j.PatternLayout">
+	      <param name="conversionPattern" value=" %c: %m%n"/>
+	   </layout>
+	   <filter class="org.apache.log4j.varia.LevelRangeFilter">
+	      <param name="levelMin" value="INFO" />
+	      <param name="levelMax" value="INFO" />
+	    </filter>
+	</appender>
+	
+	<logger name="com.sergeypavlikhin.serverapp">
+		<level value="debug" /> 
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE_ERROR" />
+        <appender-ref ref="FILE_INFO" />
+    </logger>
+	
+	
+	
+</log4j:configuration>
